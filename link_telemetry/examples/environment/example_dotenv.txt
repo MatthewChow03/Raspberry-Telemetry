@@ -1,0 +1,21 @@
+# Grafana environment variables
+
+GRAFANA_ADMIN_USERNAME=""
+GRAFANA_ADMIN_PASSWORD=""
+
+GRAFANA_URL=http://localhost:3000/
+
+# InfluxDB environment variables
+
+INFLUX_ADMIN_USERNAME=""
+INFLUX_ADMIN_PASSWORD=""
+
+INFLUX_URL=http://localhost:8086/
+
+INFLUX_ORG=UBC Solar
+INFLUX_BUCKET=""
+
+# Access tokens
+
+INFLUX_TOKEN=""
+GRAFANA_TOKEN=""

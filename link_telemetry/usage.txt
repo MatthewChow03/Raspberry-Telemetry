@@ -1,0 +1,47 @@
+Using the Current Telemetry Setup During Competition
+All of Mihir's amazing telemetry code is working with a raspberry pi which acts as a local host so that devices can view the telemetry network easily (connect to our netis wifi router + type in url)
+
+Automatic Startup (Working)
+- plug in pi and data will populate after 2 minutes (if the car is on)
+- on device, go to http://192.168.1.4:3000/d/Hgs4jSQnz3/daybreak-telemetry?orgId=1&from=now-5m&to=now&refresh=1son
+
+
+Manual Telemetry Startup
+- open terminal (may have to wait up to 30 seconds before ssh)
+- command ssh pi@pi.local
+- password: raspberry
+- command cd /home/pi/Telemetry/link_telemetry && python link_telemetry.py -p /dev/ttyUSB0 -b 230400
+
+- go to http://192.168.1.4:3000/d/Hgs4jSQnz3/daybreak-telemetry?orgId=1&from=now-5m&to=now&refresh=1s (or just 192.168.1.5:3000)
+- user: admin
+- password: new_password
+
+
+Possible Issues and Fixes
+Grafana login not accepted
+- user: admin
+- password: admin
+- reset password to "new_password"
+
+Data not showing
+- make sure the timeframe is set on the top right of the dashboard (e.g., 5 minute period + 1 second refresh)
+
+Web server not loading (3 fixes)
+1. unplug power from the pi (and wait) then plug back in
+2. ssh -> "ip address" -> look for a 192.168.1.X IP address and change the URL for the grafana site to the corresponding IP of the pi
+3. Start docker cd /home/pi/Telemetry/link_telemetry && sudo docker compose up then python link_telemetry.py -p /dev/ttyUSB0 -b 230400
+
+
+Notes
+Automatic python script is "@reboot sleep 120 && cd /home/pi/Telemetry/link_telemetry && python link_telemetry.py -p /dev/ttyUSB0 -b 230400" in the sudo and user (sudo crontab -e AND crontab -e)
+
+Currently messages are not coming in as fast as expected. A suspected issue is that the reception is not completely clean so added characters are changing the message length. This is causing "WARNING: got message length 32, expected 30. Dropping message..."
+- Tried running on laptop (docker and script) instead of on the pi
+- Tried black antena
+-Check: radio module inside the car might be loose
+
+Router wifi password is "password"
+
+Pi is running 64 bit OS to be compatible with influxdb's latest version
+
+The pi should flash a green LED soon after powering on, then it will flicker quickly 2 minutes later to signal it is receiving messages

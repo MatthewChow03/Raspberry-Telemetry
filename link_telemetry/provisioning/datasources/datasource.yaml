@@ -1,0 +1,23 @@
+apiVersion: 1
+
+deleteDatasources:
+  - name: InfluxDB
+    orgId: 1
+
+datasources:
+  - name: InfluxDB
+    type: influxdb
+    access: proxy
+    uid: o2uhkwje8832ha
+    url: http://influxdb:8086
+    basicAuth: true
+    isDefault: true
+    basicAuthUser: ${INFLUX_ADMIN_USERNAME}
+    secureJsonData:
+      token: ${INFLUX_TOKEN}
+      basicAuthPassword: ${INFLUX_ADMIN_PASSWORD}
+    jsonData:
+      version: Flux
+      organization: ${INFLUX_ORG}
+      defaultBucket: ${INFLUX_BUCKET}
+      tlsSkipVerify: true

@@ -1,0 +1,51 @@
+version: "3.9"
+services:
+  grafana:
+    image: grafana/grafana-oss
+    container_name: grafana
+    ports:
+      - 3000:3000
+    volumes:
+      - grafana:/var/lib/grafana
+      - type: bind
+        source: ./config/grafana.ini
+        target: /etc/grafana/grafana.ini
+      - type: bind
+        source: ./provisioning
+        target: /etc/grafana/provisioning
+      - type: bind
+        source: ./dashboards
+        target: /var/lib/grafana/dashboards
+    depends_on:
+      - influxdb
+
+    restart: always
+    environment:
+      - GF_SECURITY_ADMIN_USER=${GRAFANA_ADMIN_USERNAME}
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD}
+      - INFLUX_ADMIN_USERNAME=${INFLUX_ADMIN_USERNAME}
+      - INFLUX_ADMIN_PASSWORD=${INFLUX_ADMIN_PASSWORD}
+      - INFLUX_TOKEN=${INFLUX_TOKEN}
+      - INFLUX_ORG=${INFLUX_ORG}
+      - INFLUX_BUCKET=${INFLUX_BUCKET}
+
+  influxdb:
+    image: influxdb:latest
+    container_name: influxdb
+    ports:
+      - 8086:8086
+    volumes:
+      - influxdb-storage:/var/lib/influxdb2
+      - influxdb-config:/etc/influxdb2
+    environment:
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_USERNAME=${INFLUX_ADMIN_USERNAME}
+      - DOCKER_INFLUXDB_INIT_PASSWORD=${INFLUX_ADMIN_PASSWORD}
+      - DOCKER_INFLUXDB_INIT_ORG=${INFLUX_ORG}
+      - DOCKER_INFLUXDB_INIT_BUCKET=${INFLUX_BUCKET}
+    restart: always
+
+volumes:
+  grafana:
+  influxdb-storage:
+  influxdb-config:
