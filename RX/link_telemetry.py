@@ -290,7 +290,7 @@ async def main():
         if args.debug:
             message = random_can_str(can_schema)
             message = message.encode(encoding="UTF-8")
-            time.sleep(0.5)
+            #time.sleep(0.5)
         else:
             with serial.Serial() as ser:
                 # <----- Configure COM port ----->
