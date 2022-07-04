@@ -49,7 +49,6 @@
 /* USER CODE BEGIN PV */
 
 CAN_FilterTypeDef CAN_filter0;
-CAN_FilterTypeDef CAN_filter1;
 
 CAN_RxHeaderTypeDef can_rx_header;
 

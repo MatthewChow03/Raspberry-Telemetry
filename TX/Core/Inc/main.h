@@ -38,7 +38,6 @@ extern "C" {
 /* USER CODE BEGIN ET */
 
 extern CAN_FilterTypeDef CAN_filter0;
-extern CAN_FilterTypeDef CAN_filter1;
 extern CAN_RxHeaderTypeDef can_rx_header;
 extern uint8_t current_can_data[8];
 
