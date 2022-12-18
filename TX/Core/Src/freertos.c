@@ -321,10 +321,15 @@ void sendChar(char c)
 {
 	HAL_StatusTypeDef uart_tx_status;
 
-  //Convert to ASCII
-  uint8_t c_H = "0123456789ABCDEF"[(c >> 4) & 0xFUL];
-  uint8_t c_L = "0123456789ABCDEF"[ c & 0xFUL];
+  // Convert to ASCII
+  // Here we create an array to hold all the possible hex characters
+  // Then index into that string by getting 4 bits of the char c (which is 1 byte in size)
+  // For example if c = 0xA7 then c_H = "0123456789ABCDEF"[A] = A
+  // Old: uint8_t c_H = "0123456789ABCDEF"[(c >> 4) & 0xFUL];
+  uint8_t c_H = "0123456789ABCDEF"[c >> 4];
+  uint8_t c_L = "0123456789ABCDEF"[c & 0xFUL];
 
+  // Then those two characters are transmitted with MSB sent first
   uart_tx_status = HAL_UART_Transmit(&huart3, &c_H, 1, 1000);
   uart_tx_status = HAL_UART_Transmit(&huart3, &c_L, 1, 1000);
 }
